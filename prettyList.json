@@ -1884,5 +1884,194 @@
         ], 
         "name": "Kingler", 
         "type": "water"
+    },
+    "11": {
+        "name": "Metapod",
+        "attack": 20,
+        "defense": 55,
+        "type": "bug",
+        "evolveTo": "12"
+    },
+    "14": {
+        "name": "Kakuna",
+        "attack": 25,
+        "defense": 50,
+        "type": "bug",
+        "evolveTo": "15"
+    },
+    "15": {
+        "name": "Beedrill",
+        "attack": 40,
+        "defense": 45,
+        "type": "bug"
+    },
+    "25": {
+        "name": "Pikachu",
+        "attack": 50,
+        "defense": 40,
+        "type": "electric",
+        "evolveTo": "26"
+    },
+    "30": {
+        "name": "Nidorina",
+        "attack": 62,
+        "defense": 67,
+        "type": "poison",
+        "evolveTo": "31"
+    },
+    "33": {
+        "name": "Nidorino",
+        "attack": 72,
+        "defense": 57,
+        "type": "poison",
+        "evolveTo": "34"
+    },
+    "35": {
+        "name": "Clefairy",
+        "attack": 45,
+        "defense": 48,
+        "type": "fairy",
+        "evolveTo": "36"
+    },
+    "36": {
+        "name": "Clefable",
+        "attack": 70,
+        "defense": 73,
+        "type": "fairy"
+    },
+    "37": {
+        "name": "Vulpix",
+        "attack": 38,
+        "defense": 41,
+        "type": "fire",
+        "evolveTo": "38"
+    },
+    "39": {
+        "name": "Jigglypuff",
+        "attack": 45,
+        "defense": 20,
+        "type": "fairy",
+        "evolveTo": "40"
+    },
+    "40": {
+        "name": "Wigglytuff",
+        "attack": 70,
+        "defense": 45,
+        "type": "fairy"
+    },
+    "43": {
+        "name": "Oddish",
+        "attack": 50,
+        "defense": 55,
+        "type": "grass",
+        "evolveTo": "44"
+    },
+    "44": {
+        "name": "Gloom",
+        "attack": 65,
+        "defense": 70,
+        "type": "grass",
+        "evolveTo": "45"
+    },
+    "45": {
+        "name": "Vileplume",
+        "attack": 80,
+        "defense": 85,
+        "type": "grass"
+    },
+    "58": {
+        "name": "Growlithe",
+        "attack": 70,
+        "defense": 45,
+        "type": "fire",
+        "evolveTo": "59"
+    },
+    "61": {
+        "name": "Poliwhirl",
+        "attack": 65,
+        "defense": 65,
+        "type": "water",
+        "evolveTo": "62"
+    },
+    "62": {
+        "name": "Poliwrath",
+        "attack": 95,
+        "defense": 95,
+        "type": "water"
+    },
+    "63": {
+        "name": "Abra",
+        "attack": 20,
+        "defense": 15,
+        "type": "psychic",
+        "evolveTo": "64"
+    },
+    "64": {
+        "name": "Kadabra",
+        "attack": 35,
+        "defense": 30,
+        "type": "psychic",
+        "evolveTo": "65"
+    },
+    "67": {
+        "name": "Machoke",
+        "attack": 100,
+        "defense": 70,
+        "type": "fighting",
+        "evolveTo": "68"
+    },
+    "70": {
+        "name": "Weepinbell",
+        "attack": 90,
+        "defense": 50,
+        "type": "grass",
+        "evolveTo": "71"
+    },
+    "75": {
+        "name": "Graveler",
+        "attack": 95,
+        "defense": 115,
+        "type": "rock",
+        "evolveTo": "76"
+    },
+    "90": {
+        "name": "Shellder",
+        "attack": 65,
+        "defense": 100,
+        "type": "water",
+        "evolveTo": "91"
+    },
+    "93": {
+        "name": "Haunter",
+        "attack": 50,
+        "defense": 45,
+        "type": "ghost",
+        "evolveTo": "94"
+    },
+    "102": {
+        "name": "Exeggcute",
+        "attack": 40,
+        "defense": 80,
+        "type": "grass",
+        "evolveTo": "103"
+    },
+    "120": {
+        "name": "Staryu",
+        "attack": 45,
+        "defense": 55,
+        "type": "water",
+        "evolveTo": "121"
+    },
+    "132": {
+        "name": "Ditto",
+        "attack": 48,
+        "defense": 48,
+        "type": "normal"
+    },
+    "134": {
+        "name": "Vaporeon",
+        "attack": 65,
+        "defense": 60,
+        "type": "water"
     }
 }

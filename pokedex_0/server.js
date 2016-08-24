@@ -37,16 +37,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/api/comments', function(req, res) {
-  fs.readFile(COMMENTS_FILE, function(err, data) {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    res.json(JSON.parse(data));
-  });
-});
-
 app.get('/api/pokemons',function(req,res){
   fs.readFile(POKE_FILE, function(err, data) {
     if (err) {
@@ -57,32 +47,35 @@ app.get('/api/pokemons',function(req,res){
   });
 });
 
-app.post('/api/comments', function(req, res) {
-  fs.readFile(COMMENTS_FILE, function(err, data) {
+//toggle like
+app.post('/api/pokemons', function(req, res) {
+  fs.readFile(POKE_FILE, function(err, data) {
     if (err) {
       console.error(err);
       process.exit(1);
     }
-    var comments = JSON.parse(data);
+    var pokemons = JSON.parse(data);
+    console.log(req.body.key);
+    var key = req.body.key
     // NOTE: In a real implementation, we would likely rely on a database or
     // some other approach (e.g. UUIDs) to ensure a globally unique id. We'll
     // treat Date.now() as unique-enough for our purposes.
-    var newComment = {
-      id: Date.now(),
-      author: req.body.author,
-      text: req.body.text,
-    };
-    comments.push(newComment);
-    fs.writeFile(COMMENTS_FILE, JSON.stringify(comments, null, 4), function(err) {
+    var oldPokemon = pokemons[key]
+    var newPokemon = Object.assign({},oldPokemon,{
+        favorite: !oldPokemon.favorite
+      })
+    // pokemons.delete(key);
+    pokemons[key] = newPokemon;
+
+    fs.writeFile(POKE_FILE, JSON.stringify(pokemons, null, 4), function(err) {
       if (err) {
         console.error(err);
         process.exit(1);
       }
-      res.json(comments);
+      res.json(pokemons);
     });
   });
 });
-
 
 app.listen(app.get('port'), function() {
   console.log('Server started: http://localhost:' + app.get('port') + '/');

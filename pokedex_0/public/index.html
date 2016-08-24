@@ -3,29 +3,36 @@
   <head>
     <meta charset="utf-8">
     <title>Pokédex</title>
-    <!-- Not present in the tutorial. Just for basic styling. -->
-    <link rel="stylesheet" href="css/base.css" />
+    <!--<link rel="stylesheet" href="css/base.css" /> -->
     <script src="https://npmcdn.com/react@15.3.0/dist/react.js"></script>
     <script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.js"></script>
     <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
     <script src="https://npmcdn.com/jquery@3.1.0/dist/jquery.min.js"></script>
     <script src="https://npmcdn.com/remarkable@1.6.2/dist/remarkable.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <style>
   body{
     text-align: center;
   }
+  .number{
+    float: right;
+    font-weight: bolder;
+    color: gray;
+  }
   .pokemon{
     display: inline-block;
     padding: 5px;
     margin: 3px;
-    border-radius: 3%;
-    border-width: 4px; 
-    border: brown;
-    border-style: double;
+    border-radius: 5%;
+    border-width: 5px; 
+    border: steelblue;
+    border-style: groove;
   }
   .pokeimg{
     width: 200px;
+    margin: 5px 0px 5px 0px;
   }
   .grass{
     color: green;
@@ -96,6 +103,11 @@
     font-weight: bolder;
     font-size: 20px;
   }
+  .ice{
+    color: lightblue;
+    font-weight: bolder;
+    font-size: 20px;
+  }
 /* Circle */
 .hover15 figure {
   position: relative;
@@ -158,6 +170,11 @@
   transform: scale(1.3) rotate(15deg);
 }
 
+.like{
+  cursor: pointer;
+  font-size: 20px;
+}
+
   </style>
   <body>
     <div id="content"></div>
@@ -173,7 +190,7 @@
         getInitialState: function(){
           return {data: {}};
         },
-        loadCommentsFromServer: function(){
+        loadPokemonsFromServer: function(){
           $.ajax({
             url: this.props.url,
             dataType: 'json',
@@ -187,13 +204,16 @@
           });
         },
         componentDidMount: function(){
-          this.loadCommentsFromServer();
-          setInterval(this.loadCommentsFromServer,this.props.pollInterval);
+          this.loadPokemonsFromServer();
+          setInterval(this.loadPokemonsFromServer,this.props.pollInterval);
         },
         render: function() {
           return (
             <div className="commentBox">
               <h1>Pokédex</h1>
+              <div><span style = {{color:'red'}}>Made by 阳哥 </span><span style = {{color:'green'}} >&copy;2016 xinyzhang9@gmail.com</span></div>
+              <div><span style = {{color:'blue'}} >Pokemon data and images are collected from &copy;2016 Pokémon@Nintendo</span></div>
+              <hr />
               <PokemonList data = {this.state.data}/>
             </div>
           );
@@ -213,6 +233,7 @@
                   type = {obj.type}
                   att = {obj.attack}
                   def = {obj.defense}
+                  favorite = {obj.favorite}
                 >
 
                 </Pokemon>
@@ -229,30 +250,61 @@
       });
 
       var Pokemon = React.createClass({
+        getInitialState:function(){
+          if(this.props.favorite){
+            return {key:this.props.img,favorite:this.props.favorite,color:'red'}
+          }else{
+            return {key:this.props.img,favorite:this.props.favorite,color:'black'}
+          }
+          
+        },
         rawMarkup:function(){
           var md = new Remarkable();
           var rawMarkup = md.render(this.props.children.toString());
           return { __html: rawMarkup };
         },
+        handleLike: function(e){
+          e.preventDefault();
+          var oldState = this.getInitialState();
+          var key = oldState.key;
+          $.ajax({
+            url: '/api/pokemons',
+            dataType: 'json',
+            type: 'POST',
+            data: {key: key},
+            success: function(data){
+              if(oldState.favorite){
+                this.setState({key:key,favorite: !oldState.favorite,color:'black'});
+              }else{
+                this.setState({key:key,favorite: !oldState.favorite,color:'red'});
+              }
+              
+            }.bind(this),
+            error: function(xhr,status,err){
+              this.setState(oldState);
+              console.error(this.props.url, status, err.toString());
+            }.bind(this)
+          });
+        },
         render: function(){
           return(
-            <div className = "pokemon hover03">
+            <div className = "pokemon hover15 hover03">
               <h3 className = "pokemon_name">
-                <span>#{this.props.img} </span>
                 {this.props.name}
               </h3>
+              <span className="glyphicon glyphicon-heart like" aria-hidden="true" onClick = {this.handleLike} style = {{color: this.state.color}}></span>
               <figure><img className = 'pokeimg' src = {'img/'+this.props.img+'.png'} /></figure>
               <span className = {this.props.type}>{this.props.type.capitalize()}</span><br />
               <span><b>ATT</b>: {this.props.att} |</span> 
               <span><b> DEF</b>: {this.props.def}</span>
-
+              <span className = "number">#{this.props.img} </span>
             </div>
           )
         }
       });
 
       ReactDOM.render(
-        <PokemonBox url = "/api/pokemons" pollInterval={2000}/>,
+        <PokemonBox url = "/api/pokemons" pollInterval={1000}/>,
         document.getElementById('content')
       );
 
