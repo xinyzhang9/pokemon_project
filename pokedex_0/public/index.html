@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pokédex</title>
+    <!-- Not present in the tutorial. Just for basic styling. -->
+    <link rel="stylesheet" href="css/base.css" />
+    <script src="https://npmcdn.com/react@15.3.0/dist/react.js"></script>
+    <script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.js"></script>
+    <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+    <script src="https://npmcdn.com/jquery@3.1.0/dist/jquery.min.js"></script>
+    <script src="https://npmcdn.com/remarkable@1.6.2/dist/remarkable.min.js"></script>
+  </head>
+  <style>
+  body{
+    text-align: center;
+  }
+  .pokemon{
+    display: inline-block;
+    padding: 5px;
+    margin: 3px;
+    border-radius: 3%;
+    border-width: 4px; 
+    border: brown;
+    border-style: double;
+  }
+  .pokeimg{
+    width: 200px;
+  }
+  .grass{
+    color: green;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .fire{
+    color: red;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .normal{
+    color: grey;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .water{
+    color: skyblue;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .bug{
+    color: lightgreen;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .poison{
+    color: purple;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .electric{
+    color: gold;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .ground{
+    color: brown;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .fighting{
+    color: darkred;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .psychic{
+    color: #33cccc;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .rock{
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .ghost{
+    color: #666699;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .dragon{
+    color: orange;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .fairy{
+    color: pink;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+/* Circle */
+.hover15 figure {
+  position: relative;
+}
+.hover15 figure::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: block;
+  content: '';
+  width: 0;
+  height: 0;
+  background: rgba(255,255,255,.2);
+  border-radius: 100%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+.hover15 figure:hover::before {
+  -webkit-animation: circle .75s;
+  animation: circle .75s;
+}
+@-webkit-keyframes circle {
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
+}
+@keyframes circle {
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
+}
+
+/* Zoom Out #1 */
+.hover03 figure img {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+.hover03 figure:hover img {
+  -webkit-transform: scale(1.3) rotate(15deg);
+  transform: scale(1.3) rotate(15deg);
+}
+
+  </style>
+  <body>
+    <div id="content"></div>
+    <script type="text/babel">
+      // To get started with this tutorial running your own code, simply remove
+      // the script tag loading scripts/example.js and start writing code here.
+      
+      // tutorial1.js
+      String.prototype.capitalize = function() {
+          return this.charAt(0).toUpperCase() + this.slice(1);
+      }
+      var PokemonBox = React.createClass({
+        getInitialState: function(){
+          return {data: {}};
+        },
+        loadCommentsFromServer: function(){
+          $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            cache: false,
+            success: function(data){
+              this.setState({data: data});
+            }.bind(this),
+            error: function(xhr,status,err){
+              console.error(this.props.url, status, err.toString())
+            }.bind(this)
+          });
+        },
+        componentDidMount: function(){
+          this.loadCommentsFromServer();
+          setInterval(this.loadCommentsFromServer,this.props.pollInterval);
+        },
+        render: function() {
+          return (
+            <div className="commentBox">
+              <h1>Pokédex</h1>
+              <PokemonList data = {this.state.data}/>
+            </div>
+          );
+        }
+      });
+
+      var PokemonList = React.createClass({
+        render: function() {
+          var pokemonNodes = [];
+          for(var key in this.props.data){
+            if (!this.props.data.hasOwnProperty(key)) continue;
+            var obj = this.props.data[key]
+            var node = (
+                <Pokemon name = {obj.name} 
+                  key = {key} 
+                  img = {key} 
+                  type = {obj.type}
+                  att = {obj.attack}
+                  def = {obj.defense}
+                >
+
+                </Pokemon>
+              );
+            pokemonNodes.push(node);
+          }
+
+          return (
+            <div className = "commentList">
+              {pokemonNodes}
+            </div>
+          );
+        }
+      });
+
+      var Pokemon = React.createClass({
+        rawMarkup:function(){
+          var md = new Remarkable();
+          var rawMarkup = md.render(this.props.children.toString());
+          return { __html: rawMarkup };
+        },
+        render: function(){
+          return(
+            <div className = "pokemon hover03">
+              <h3 className = "pokemon_name">
+                <span>#{this.props.img} </span>
+                {this.props.name}
+              </h3>
+              <figure><img className = 'pokeimg' src = {'img/'+this.props.img+'.png'} /></figure>
+              <span className = {this.props.type}>{this.props.type.capitalize()}</span><br />
+              <span><b>ATT</b>: {this.props.att} |</span> 
+              <span><b> DEF</b>: {this.props.def}</span>
+
+            </div>
+          )
+        }
+      });
+
+      ReactDOM.render(
+        <PokemonBox url = "/api/pokemons" pollInterval={2000}/>,
+        document.getElementById('content')
+      );
+
+
+
+    </script>
+  </body>
+</html>
